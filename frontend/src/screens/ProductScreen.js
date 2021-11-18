@@ -1,13 +1,28 @@
-import React, { Fragment } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import React, { Fragment, useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import Rating from '../components/Rating'
-import products from '../products'
+import axios from 'axios'
 
-const ProductScreen = ({ matches }) => {
-  const { id } = useParams()
+const ProductScreen = () => {
+  const [product, setProduct] = useState()
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-  const product = products.find((product) => product._id === id)
+  const { id } = useParams()
+
+  useEffect(() => {
+    const getProduct = async (key) => {
+      const response = await axios.get(`/api/products/${key}`)
+      setProduct(response.data)
+      setLoading(false)
+    }
+    getProduct(id)
+  }, [id])
+
+
+  if(loading){
+    return <h3 className="text-center">Loading...</h3>
+  }
 
   return (
     <Fragment>
