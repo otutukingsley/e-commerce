@@ -19,7 +19,11 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate(redirect)
+      if (redirect === '/') {
+        navigate(redirect)
+      } else {
+        navigate(`/${redirect}`)
+      }
     }
   }, [navigate, redirect, userInfo])
 
@@ -32,7 +36,7 @@ const LoginScreen = () => {
     <FormContainer>
       <h1>Sign In</h1>
       {error && <Message variant="danger">{error}</Message>}
-      {loading && <Loader/>}
+      {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="email" className="py-3">
           <Form.Label>Email Address</Form.Label>

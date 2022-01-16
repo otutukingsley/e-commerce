@@ -16,7 +16,7 @@ const Product = ({ product }) => {
         </Link>
         <Card.Text as="div">
           <Rating
-            value={product.rating}
+            value={parseInt(product.rating)}
             text={`${product.numReviews} reviews`}
             color="orange"
           />

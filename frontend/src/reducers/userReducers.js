@@ -24,6 +24,8 @@ const initialState = {
   profile: {}
 }
 
+//LOGIN A USER
+
 export const userLoginReducer = (state = initialState, action) => {
   switch (action.type) {
     case USER_LOGIN_REQUEST:
@@ -57,6 +59,9 @@ export const userLoginReducer = (state = initialState, action) => {
   }
 }
 
+
+//REGISTER A USER
+
 export const userRegisterReducer = (state = initialState, action) => {
   switch (action.type) {
     case USER_REGISTER_REQUEST:
@@ -81,6 +86,8 @@ export const userRegisterReducer = (state = initialState, action) => {
       return state
   }
 }
+
+// GET USER PROFILE
 
 export const userDetailsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -114,6 +121,8 @@ export const userDetailsReducer = (state = initialState, action) => {
   }
 }
 
+
+//UPDATE PROFILE
 
 export const userUpdateReducer = (state = initialState, action) => {
   switch (action.type) {
