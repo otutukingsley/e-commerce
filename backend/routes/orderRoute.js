@@ -3,6 +3,7 @@ const router = express.Router()
 import {
   addOrderedItems,
   getOrderedItem,
+  updateOrderedItem,
 } from "../controllers/orderController.js"
 import { protect } from "../middleware/authMiddleware.js"
 
@@ -12,5 +13,6 @@ import { protect } from "../middleware/authMiddleware.js"
 router.route("/").post(protect, addOrderedItems)
 
 router.route("/:id").get(protect, getOrderedItem)
+router.route("/:id/pay").put(protect, updateOrderedItem)
 
 export default router
