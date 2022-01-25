@@ -16,9 +16,13 @@ const PlaceOrderScreen = () => {
   const { order, success, error, loading } = orderCreate
 
   useEffect(() => {
-    if (success) {
+    if (!success) {
+      return
+    } else {
       navigate(`/order/${order._id}`)
     }
+
+    console.log(order)
     //eslint-disable-next-line
   }, [navigate, success])
 
