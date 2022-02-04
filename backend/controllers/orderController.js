@@ -25,7 +25,7 @@ const addOrderedItems = asyncHandler(async (req, res) => {
       orderItems,
       shippingAddress,
       paymentMethod,
-      itemsPrice,
+      itemsPrice: itemsPrice,
       taxPrice,
       shippingPrice,
       totalPrice,
@@ -77,4 +77,12 @@ const updateOrderedItem = asyncHandler(async (req, res) => {
   }
 })
 
-export { addOrderedItems, getOrderedItem, updateOrderedItem }
+// @desc Get logged in user orders
+//@route GET /api/orders/myorders
+//@access Private
+const getAuthUserOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id })
+  res.json(orders)
+})
+
+export { addOrderedItems, getOrderedItem, updateOrderedItem, getAuthUserOrders }
