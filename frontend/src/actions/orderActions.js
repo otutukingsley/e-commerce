@@ -80,7 +80,7 @@ export const getOrder = (id) => async (dispatch, getState) => {
   }
 }
 
-export const payOrder = (paymentResult, id) => async (dispatch, getState) => {
+export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
   try {
     dispatch({
       type: ORDER_PAY_REQUEST,

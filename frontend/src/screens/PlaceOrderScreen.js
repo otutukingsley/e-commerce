@@ -21,8 +21,6 @@ const PlaceOrderScreen = () => {
     } else {
       navigate(`/order/${order._id}`)
     }
-
-    console.log(order)
     //eslint-disable-next-line
   }, [navigate, success])
 

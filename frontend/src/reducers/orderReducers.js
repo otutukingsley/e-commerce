@@ -69,7 +69,7 @@ export const orderRetrievedReducer = (
   }
 }
 
-export const orderPayReducer = (state = {}, action) => {
+export const orderPayReducer = (state = { success: false }, action) => {
   switch (action.type) {
     case ORDER_PAY_REQUEST:
       return {
@@ -78,16 +78,14 @@ export const orderPayReducer = (state = {}, action) => {
 
     case ORDER_PAY_SUCCESS:
       return {
-        ...state,
-        success: true,
         loading: false,
+        success: true,
       }
 
     case ORDER_PAY_ERROR:
       return {
-        ...state,
-        error: action.payload,
         loading: false,
+        error: action.payload,
       }
 
     case ORDER_PAY_RESET:
