@@ -17,6 +17,7 @@ import {
   USERS_LIST_REQUEST,
   USERS_LIST_SUCCESS,
   USERS_LIST_ERROR,
+  USERS_LIST_RESET,
 } from "../constants/userConstants"
 
 const initialState = {
@@ -180,6 +181,10 @@ export const adminGetUsersListReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
         loading: false,
+      }
+    case USERS_LIST_RESET:
+      return {
+        users: [],
       }
     default:
       return state

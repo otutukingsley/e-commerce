@@ -8,12 +8,23 @@ import { adminUsersList } from "../actions/userActions"
 
 const AdminUsersListScreen = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const adminGetUsersList = useSelector((state) => state.adminGetUsersList)
   const { users, loading, error } = adminGetUsersList
+  const userLogin = useSelector((state) => state.userLogin)
+  const {
+    loading: userLoginLoading,
+    error: userLoginError,
+    userInfo,
+  } = userLogin
 
   useEffect(() => {
-    dispatch(adminUsersList())
-  }, [dispatch])
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(adminUsersList())
+    } else {
+      navigate("/login")
+    }
+  }, [dispatch, navigate, userInfo])
 
   const deleteHandler = () => {
     console.log("Hello")

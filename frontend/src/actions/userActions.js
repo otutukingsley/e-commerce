@@ -16,6 +16,7 @@ import {
   USERS_LIST_ERROR,
   USERS_LIST_REQUEST,
   USERS_LIST_SUCCESS,
+  USERS_LIST_RESET,
 } from "../constants/userConstants"
 import { GET_MY_ORDERS_RESET } from "../constants/orderConstants"
 import axios from "axios"
@@ -211,5 +212,8 @@ export const logout = () => (dispatch) => {
   })
   dispatch({
     type: GET_MY_ORDERS_RESET,
+  })
+  dispatch({
+    type: USERS_LIST_RESET,
   })
 }
