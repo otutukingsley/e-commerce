@@ -1,8 +1,8 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
-import { logout } from '../actions/userActions'
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap"
+import { logout } from "../actions/userActions"
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -13,32 +13,45 @@ const Header = () => {
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <NavLink to="/">
+          <Link to="/">
             <Navbar.Brand>e-commerce</Navbar.Brand>
-          </NavLink>
+          </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto d-flex flex-md-row align-items-md-center">
-              <NavLink to="/cart" style={{ color: 'white' }}>
+              <Link to="/cart" style={{ color: "white" }}>
                 <i className="fas fa-shopping-cart"></i> Cart
-              </NavLink>
+              </Link>
 
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id="user-name">
-                  <NavLink to="/profile">
+                  <Link to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
-                  </NavLink>
+                  </Link>
                   <NavDropdown.Item onClick={() => dispatch(logout())}>
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
-                <NavLink
+                <Link
                   to="/login"
-                  style={{ color: 'white', margin: '0 0 0 10px' }}
+                  style={{ color: "white", margin: "0 0 0 10px" }}
                 >
                   <i className="fas fa-user"></i> Sign In
-                </NavLink>
+                </Link>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title="Admin" id="adminMenu">
+                  <Link to="/admin/userlist">
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </Link>
+                  <Link to="/admin/productlist">
+                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  </Link>
+                  <Link to="/admin/orderlist">
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </Link>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>

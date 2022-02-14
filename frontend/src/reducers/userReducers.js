@@ -14,14 +14,18 @@ import {
   USER_UPDATE_SUCCESS,
   USER_UPDATE_RESET,
   USER_UPDATE_ERROR,
-} from '../constants/userConstants'
+  USERS_LIST_REQUEST,
+  USERS_LIST_SUCCESS,
+  USERS_LIST_ERROR,
+} from "../constants/userConstants"
 
 const initialState = {
   userInfo: null,
   error: null,
   loading: false,
   success: false,
-  profile: {}
+  profile: {},
+  users: [],
 }
 
 //LOGIN A USER
@@ -58,7 +62,6 @@ export const userLoginReducer = (state = initialState, action) => {
       return state
   }
 }
-
 
 //REGISTER A USER
 
@@ -121,7 +124,6 @@ export const userDetailsReducer = (state = initialState, action) => {
   }
 }
 
-
 //UPDATE PROFILE
 
 export const userUpdateReducer = (state = initialState, action) => {
@@ -147,6 +149,33 @@ export const userUpdateReducer = (state = initialState, action) => {
       }
 
     case USER_UPDATE_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      }
+    default:
+      return state
+  }
+}
+
+//Admin List
+export const adminGetUsersListReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case USERS_LIST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+
+    case USERS_LIST_SUCCESS:
+      return {
+        ...state,
+        users: action.payload,
+        loading: false,
+      }
+
+    case USERS_LIST_ERROR:
       return {
         ...state,
         error: action.payload,

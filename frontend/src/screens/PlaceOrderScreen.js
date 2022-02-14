@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { useNavigate, useLocation, Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import Message from "../components/Message"

@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { Form, Button, Row, Col } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import FormContainer from '../components/FormContainer'
-import CheckOutSteps from '../components/CheckOutSteps'
-import { savePaymentMethod } from '../actions/cartActions'
+import React, { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { Form, Button, Col } from "react-bootstrap"
+import { useDispatch, useSelector } from "react-redux"
+import FormContainer from "../components/FormContainer"
+import CheckOutSteps from "../components/CheckOutSteps"
+import { savePaymentMethod } from "../actions/cartActions"
 
 const PaymentScreen = () => {
   const dispatch = useDispatch()
   const cart = useSelector((state) => state.cart)
   const navigate = useNavigate()
   const { shippingDetails, paymentMethod } = cart
-  const [payment, setPayment] = useState(paymentMethod || 'PayPal')
+  const [payment, setPayment] = useState(paymentMethod || "PayPal")
   useEffect(() => {
     if (!shippingDetails) {
-      navigate('/shipping')
+      navigate("/shipping")
     }
   }, [navigate, shippingDetails])
 
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(savePaymentMethod(payment))
-    navigate('/placeorder')
+    navigate("/placeorder")
   }
 
   return (
@@ -38,7 +38,7 @@ const PaymentScreen = () => {
               id="PayPal"
               name="paymentMethod"
               value="PayPal"
-              checked={payment === 'PayPal'}
+              checked={payment === "PayPal"}
               onChange={(e) => setPayment(e.target.value)}
             ></Form.Check>
             <Form.Check
@@ -47,7 +47,7 @@ const PaymentScreen = () => {
               id="Stripe"
               name="paymentMethod"
               value="Stripe"
-              checked={payment === 'Stripe'}
+              checked={payment === "Stripe"}
               onChange={(e) => setPayment(e.target.value)}
             ></Form.Check>
           </Col>

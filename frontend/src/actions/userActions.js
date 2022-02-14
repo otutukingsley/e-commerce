@@ -12,8 +12,10 @@ import {
   USER_DETAILS_ERROR,
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
-  USER_UPDATE_RESET,
   USER_UPDATE_ERROR,
+  USERS_LIST_ERROR,
+  USERS_LIST_REQUEST,
+  USERS_LIST_SUCCESS,
 } from "../constants/userConstants"
 import { GET_MY_ORDERS_RESET } from "../constants/orderConstants"
 import axios from "axios"
@@ -158,6 +160,39 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_UPDATE_ERROR,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const adminUsersList = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USERS_LIST_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const response = await axios.get(`/api/users`, config)
+
+    dispatch({
+      type: USERS_LIST_SUCCESS,
+      payload: response.data,
+    })
+  } catch (error) {
+    dispatch({
+      type: USERS_LIST_ERROR,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
