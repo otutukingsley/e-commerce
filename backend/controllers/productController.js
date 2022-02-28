@@ -1,5 +1,5 @@
-import asyncHandler from 'express-async-handler'
-import Product from '../models/productsModel.js'
+import asyncHandler from "express-async-handler"
+import Product from "../models/productsModel.js"
 
 // @desc Fetch all products
 //@route GET /api/products
@@ -18,8 +18,24 @@ const getSingleProduct = asyncHandler(async (req, res) => {
     res.json(product)
   } else {
     res.status(404)
-    throw new Error('Product not found')
+    throw new Error("Product not found")
   }
 })
 
-export { getProducts, getSingleProduct }
+// @desc Delete a product
+//@route DELETE /api/products/:id
+//@access Private Admin Only
+const deleteSingleProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id)
+  if (product) {
+    await product.remove()
+    res.json({
+      message: "Product deleted successfully",
+    })
+  } else {
+    res.status(404)
+    throw new Error("Product not found")
+  }
+})
+
+export { getProducts, getSingleProduct, deleteSingleProduct }
