@@ -17,6 +17,10 @@ import {
   USERS_LIST_REQUEST,
   USERS_LIST_SUCCESS,
   USERS_LIST_RESET,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_ERROR,
+  CLEAR_MSG,
 } from "../constants/userConstants"
 import { GET_MY_ORDERS_RESET } from "../constants/orderConstants"
 import axios from "axios"
@@ -202,6 +206,39 @@ export const adminUsersList = () => async (dispatch, getState) => {
   }
 }
 
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DELETE_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const response = await axios.delete(`/api/users/${id}`, config)
+
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+      payload: response.data,
+    })
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_ERROR,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
 export const logout = () => (dispatch) => {
   localStorage.removeItem("userInfo")
   dispatch({
@@ -215,5 +252,11 @@ export const logout = () => (dispatch) => {
   })
   dispatch({
     type: USERS_LIST_RESET,
+  })
+}
+
+export const clearMessages = () => (dispatch) => {
+  dispatch({
+    type: CLEAR_MSG,
   })
 }

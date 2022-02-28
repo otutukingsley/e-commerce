@@ -18,6 +18,10 @@ import {
   USERS_LIST_SUCCESS,
   USERS_LIST_ERROR,
   USERS_LIST_RESET,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_ERROR,
+  CLEAR_MSG,
 } from "../constants/userConstants"
 
 const initialState = {
@@ -27,6 +31,7 @@ const initialState = {
   success: false,
   profile: {},
   users: [],
+  resMessage: null,
 }
 
 //LOGIN A USER
@@ -186,6 +191,42 @@ export const adminGetUsersListReducer = (state = initialState, action) => {
       return {
         users: [],
       }
+    default:
+      return state
+  }
+}
+
+//Admin DELETE
+export const adminDeleteUserReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case USER_DELETE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+
+    case USER_DELETE_SUCCESS:
+      return {
+        ...state,
+        resMessage: action.payload.message,
+        success: true,
+        loading: false,
+      }
+
+    case CLEAR_MSG:
+      return {
+        ...state,
+        resMessage: null,
+        loading: false,
+      }
+
+    case USER_DELETE_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      }
+
     default:
       return state
   }
