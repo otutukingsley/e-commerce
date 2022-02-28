@@ -16,18 +16,14 @@ const AdminUsersListScreen = () => {
   const adminGetUsersList = useSelector((state) => state.adminGetUsersList)
   const { users, loading, error } = adminGetUsersList
   const userLogin = useSelector((state) => state.userLogin)
-  const {
-    loading: userLoginLoading,
-    error: userLoginError,
-    userInfo,
-  } = userLogin
+  const { userInfo } = userLogin
 
   const adminDeleteUser = useSelector((state) => state.adminDeleteUser)
   const {
     loading: deleteLoading,
     error: deleteError,
     resMessage,
-    success,
+    success: deleteSucces,
   } = adminDeleteUser
 
   useEffect(() => {
@@ -40,7 +36,9 @@ const AdminUsersListScreen = () => {
   }, [dispatch, navigate, userInfo, resMessage])
 
   const deleteHandler = (id) => {
-    dispatch(deleteUser(id))
+    if (window.confirm("Are you sure")) {
+      dispatch(deleteUser(id))
+    }
   }
 
   return (
