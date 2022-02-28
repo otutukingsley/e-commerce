@@ -23,7 +23,7 @@ const AdminUsersListScreen = () => {
     loading: deleteLoading,
     error: deleteError,
     resMessage,
-    success: deleteSucces,
+    success: deleteSuccess,
   } = adminDeleteUser
 
   useEffect(() => {

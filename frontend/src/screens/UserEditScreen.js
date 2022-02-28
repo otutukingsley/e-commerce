@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux"
 import Message from "../components/Message"
 import Loader from "../components/Loader"
 import FormContainer from "../components/FormContainer"
-import { getUserProfile } from "../actions/userActions"
+import { getUserProfile, editUser, clearMessages } from "../actions/userActions"
+import { USER_EDIT_RESET } from "../constants/userConstants"
 
 const UserEditScreen = () => {
   const { id } = useParams()
@@ -16,19 +17,43 @@ const UserEditScreen = () => {
   const navigate = useNavigate()
   const userDetails = useSelector((state) => state.userDetails)
   const { loading, error, profile } = userDetails
+  const adminEditUser = useSelector((state) => state.adminEditUser)
+  const {
+    loading: editLoading,
+    error: editError,
+    resMessage,
+    success: editSuccess,
+  } = adminEditUser
 
   useEffect(() => {
-    if (!profile.name || profile._id !== id) {
-      dispatch(getUserProfile(id))
+    if (resMessage) {
+      dispatch({ type: USER_EDIT_RESET })
+      dispatch(clearMessages())
+      navigate("/admin/userlist")
     } else {
-      setName(profile.name)
-      setEmail(profile.email)
-      setIsAdmin(profile.isAdmin)
+      if (!profile.name || profile._id !== id) {
+        dispatch(getUserProfile(id))
+      } else {
+        setName(profile.name)
+        setEmail(profile.email)
+        setIsAdmin(profile.isAdmin)
+      }
     }
-  }, [dispatch, id, profile._id, profile.email, profile.isAdmin, profile.name])
+  }, [
+    dispatch,
+    navigate,
+    id,
+    profile._id,
+    profile.email,
+    profile.isAdmin,
+    profile.name,
+    resMessage,
+  ])
 
   const submitHandler = (e) => {
     e.preventDefault()
+    const formData = { name: name, email: email, isAdmin: isAdmin }
+    dispatch(editUser(id, formData))
   }
 
   return (
@@ -38,6 +63,8 @@ const UserEditScreen = () => {
       </button>
       <FormContainer>
         <h1>Edit User</h1>
+        {editLoading && <Loader />}
+        {editError && <Message variant="danger">{editError}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (

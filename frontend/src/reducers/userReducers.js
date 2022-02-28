@@ -1,28 +1,4 @@
-import {
-  USER_LOGIN_REQUEST,
-  USER_LOGIN_SUCCESS,
-  USER_REGISTER_REQUEST,
-  USER_REGISTER_SUCCESS,
-  USER_REGISTER_ERROR,
-  USER_LOGIN_OUT,
-  USER_LOGIN_ERROR,
-  USER_DETAILS_REQUEST,
-  USER_DETAILS_SUCCESS,
-  USER_DETAILS_RESET,
-  USER_DETAILS_ERROR,
-  USER_UPDATE_REQUEST,
-  USER_UPDATE_SUCCESS,
-  USER_UPDATE_RESET,
-  USER_UPDATE_ERROR,
-  USERS_LIST_REQUEST,
-  USERS_LIST_SUCCESS,
-  USERS_LIST_ERROR,
-  USERS_LIST_RESET,
-  USER_DELETE_REQUEST,
-  USER_DELETE_SUCCESS,
-  USER_DELETE_ERROR,
-  CLEAR_MSG,
-} from "../constants/userConstants"
+import * as actionTypes from "../constants/userConstants"
 
 const initialState = {
   userInfo: null,
@@ -38,27 +14,27 @@ const initialState = {
 
 export const userLoginReducer = (state = initialState, action) => {
   switch (action.type) {
-    case USER_LOGIN_REQUEST:
+    case actionTypes.USER_LOGIN_REQUEST:
       return {
         ...state,
         loading: true,
       }
 
-    case USER_LOGIN_SUCCESS:
+    case actionTypes.USER_LOGIN_SUCCESS:
       return {
         ...state,
         userInfo: action.payload,
         loading: false,
       }
 
-    case USER_LOGIN_ERROR:
+    case actionTypes.USER_LOGIN_ERROR:
       return {
         ...state,
         error: action.payload,
         loading: false,
       }
 
-    case USER_LOGIN_OUT:
+    case actionTypes.USER_LOGIN_OUT:
       return {
         userInfo: null,
         error: null,
@@ -73,19 +49,19 @@ export const userLoginReducer = (state = initialState, action) => {
 
 export const userRegisterReducer = (state = initialState, action) => {
   switch (action.type) {
-    case USER_REGISTER_REQUEST:
+    case actionTypes.USER_REGISTER_REQUEST:
       return {
         ...state,
         loading: true,
       }
 
-    case USER_REGISTER_SUCCESS:
+    case actionTypes.USER_REGISTER_SUCCESS:
       return {
         ...state,
         loading: false,
       }
 
-    case USER_REGISTER_ERROR:
+    case actionTypes.USER_REGISTER_ERROR:
       return {
         ...state,
         error: action.payload,
@@ -100,26 +76,26 @@ export const userRegisterReducer = (state = initialState, action) => {
 
 export const userDetailsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case USER_DETAILS_REQUEST:
+    case actionTypes.USER_DETAILS_REQUEST:
       return {
         ...state,
         loading: true,
       }
 
-    case USER_DETAILS_SUCCESS:
+    case actionTypes.USER_DETAILS_SUCCESS:
       return {
         ...state,
         profile: action.payload,
         loading: false,
       }
 
-    case USER_DETAILS_RESET:
+    case actionTypes.USER_DETAILS_RESET:
       return {
         ...state,
         profile: {},
       }
 
-    case USER_DETAILS_ERROR:
+    case actionTypes.USER_DETAILS_ERROR:
       return {
         ...state,
         error: action.payload,
@@ -134,13 +110,13 @@ export const userDetailsReducer = (state = initialState, action) => {
 
 export const userUpdateReducer = (state = initialState, action) => {
   switch (action.type) {
-    case USER_UPDATE_REQUEST:
+    case actionTypes.USER_UPDATE_REQUEST:
       return {
         ...state,
         loading: true,
       }
 
-    case USER_UPDATE_SUCCESS:
+    case actionTypes.USER_UPDATE_SUCCESS:
       return {
         ...state,
         userInfo: action.payload,
@@ -148,13 +124,13 @@ export const userUpdateReducer = (state = initialState, action) => {
         loading: false,
       }
 
-    case USER_UPDATE_RESET:
+    case actionTypes.USER_UPDATE_RESET:
       return {
         ...state,
         profile: {},
       }
 
-    case USER_UPDATE_ERROR:
+    case actionTypes.USER_UPDATE_ERROR:
       return {
         ...state,
         error: action.payload,
@@ -168,26 +144,26 @@ export const userUpdateReducer = (state = initialState, action) => {
 //Admin List
 export const adminGetUsersListReducer = (state = initialState, action) => {
   switch (action.type) {
-    case USERS_LIST_REQUEST:
+    case actionTypes.USERS_LIST_REQUEST:
       return {
         ...state,
         loading: true,
       }
 
-    case USERS_LIST_SUCCESS:
+    case actionTypes.USERS_LIST_SUCCESS:
       return {
         ...state,
         users: action.payload,
         loading: false,
       }
 
-    case USERS_LIST_ERROR:
+    case actionTypes.USERS_LIST_ERROR:
       return {
         ...state,
         error: action.payload,
         loading: false,
       }
-    case USERS_LIST_RESET:
+    case actionTypes.USERS_LIST_RESET:
       return {
         users: [],
       }
@@ -199,13 +175,13 @@ export const adminGetUsersListReducer = (state = initialState, action) => {
 //Admin DELETE
 export const adminDeleteUserReducer = (state = initialState, action) => {
   switch (action.type) {
-    case USER_DELETE_REQUEST:
+    case actionTypes.USER_DELETE_REQUEST:
       return {
         ...state,
         loading: true,
       }
 
-    case USER_DELETE_SUCCESS:
+    case actionTypes.USER_DELETE_SUCCESS:
       return {
         ...state,
         resMessage: action.payload.message,
@@ -213,18 +189,58 @@ export const adminDeleteUserReducer = (state = initialState, action) => {
         loading: false,
       }
 
-    case CLEAR_MSG:
+    case actionTypes.CLEAR_MSG:
       return {
         ...state,
         resMessage: null,
         loading: false,
       }
 
-    case USER_DELETE_ERROR:
+    case actionTypes.USER_DELETE_ERROR:
       return {
         ...state,
         error: action.payload,
         loading: false,
+      }
+
+    default:
+      return state
+  }
+}
+
+//Admin EDIT
+export const adminEditUserReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case actionTypes.USER_EDIT_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+
+    case actionTypes.USER_EDIT_SUCCESS:
+      return {
+        ...state,
+        resMessage: action.payload,
+        success: true,
+        loading: false,
+      }
+
+    case actionTypes.CLEAR_MSG:
+      return {
+        ...state,
+        resMessage: null,
+        loading: false,
+      }
+
+    case actionTypes.USER_EDIT_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      }
+    case actionTypes.USER_EDIT_RESET:
+      return {
+        profile: {},
       }
 
     default:
