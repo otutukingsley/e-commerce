@@ -1,18 +1,18 @@
-import axios from "axios"
-import * as actionTypes from "../constants/productsConstants"
+import axios from "axios";
+import * as actionTypes from "../constants/productsConstants";
 
 export const listProducts = () => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.PRODUCT_LIST_REQUEST,
-    })
+    });
 
-    const response = await axios.get("/api/products")
+    const response = await axios.get("/api/products");
 
     dispatch({
       type: actionTypes.PRODUCT_LIST_SUCCESS,
       payload: response.data,
-    })
+    });
   } catch (error) {
     dispatch({
       type: actionTypes.PRODUCT_LIST_ERROR,
@@ -20,22 +20,22 @@ export const listProducts = () => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
-    })
+    });
   }
-}
+};
 
 export const eachProduct = (id) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.PRODUCT_DETAILS_REQUEST,
-    })
+    });
 
-    const response = await axios.get(`/api/products/${id}`)
+    const response = await axios.get(`/api/products/${id}`);
 
     dispatch({
       type: actionTypes.PRODUCT_DETAILS_SUCCESS,
       payload: response.data,
-    })
+    });
   } catch (error) {
     dispatch({
       type: actionTypes.PRODUCT_DETAILS_ERROR,
@@ -43,32 +43,32 @@ export const eachProduct = (id) => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
-    })
+    });
   }
-}
+};
 
 export const deleteProduct = (id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: actionTypes.PRODUCT_DELETE_REQUEST,
-    })
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
 
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
-    }
+    };
 
-    const response = await axios.delete(`/api/products/${id}`, config)
+    const response = await axios.delete(`/api/products/${id}`, config);
 
     dispatch({
       type: actionTypes.PRODUCT_DELETE_SUCCESS,
       payload: response.data,
-    })
+    });
   } catch (error) {
     dispatch({
       type: actionTypes.PRODUCT_DELETE_ERROR,
@@ -76,12 +76,52 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
-    })
+    });
   }
-}
+};
+
+export const createSingleProduct =
+  (formData = {}) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: actionTypes.PRODUCT_CREATE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.post(`/api/products`, formData, config);
+
+      console.log(data);
+
+      dispatch({
+        type: actionTypes.PRODUCT_CREATE_SUCCESS,
+        payload: {
+          product: data,
+          message: "Product created successfully",
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: actionTypes.PRODUCT_CREATE_ERROR,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const clearMessages = () => (dispatch) => {
   dispatch({
     type: actionTypes.CLEAR_MSG,
-  })
-}
+  });
+};

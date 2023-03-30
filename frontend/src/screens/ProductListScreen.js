@@ -1,48 +1,73 @@
-import React, { useState, useEffect } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
-import { Table, Button, Row, Col } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
-import Message from "../components/Message"
-import Loader from "../components/Loader"
+import React, { useState, useEffect, useCallback } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Table, Button, Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
 import {
   listProducts,
   deleteProduct,
   clearMessages,
-} from "../actions/productActions"
+  createSingleProduct,
+} from "../actions/productActions";
 
 const ProductListScreen = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const productList = useSelector((state) => state.productList)
-  const { loading, error, products } = productList
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
-  const deleteSingleProduct = useSelector((state) => state.deleteProduct)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const productList = useSelector((state) => state.productList);
+  const { loading, error, products } = productList;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  const deleteSingleProduct = useSelector((state) => state.deleteProduct);
   const {
     loading: deleteLoading,
     error: deleteError,
-    resMessage,
-    success,
-  } = deleteSingleProduct
+    resMessage: successDelete,
+  } = deleteSingleProduct;
+
+  const {
+    loading: createLoading,
+    error: createError,
+    resMessage: successCreate,
+    product: createdProduct,
+  } = useSelector((state) => state.createProduct);
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(listProducts())
-      dispatch(clearMessages())
-    } else {
-      navigate("/login")
+    if (!userInfo.isAdmin) {
+      navigate("/login");
     }
-  }, [dispatch, navigate, userInfo, resMessage])
+
+    if (successCreate) {
+      navigate(`/admin/product/${createdProduct?._id}/edit`);
+      dispatch(clearMessages());
+    } else {
+      dispatch(listProducts());
+    }
+
+    if (successDelete) {
+      dispatch(clearMessages());
+    }
+
+  }, [
+    dispatch,
+    navigate,
+    userInfo,
+    successDelete,
+    successCreate,
+    createdProduct,
+  ]);
+
+  console.log(createdProduct)
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure")) {
-      dispatch(deleteProduct(id))
+      dispatch(deleteProduct(id));
     }
-  }
+  };
 
-  const createProductHandler = () => {
-    //CREATE PRODUCT
-  }
+  const createProductHandler = useCallback(() => {
+    dispatch(createSingleProduct());
+  }, [dispatch]);
 
   return (
     <>
@@ -58,6 +83,8 @@ const ProductListScreen = () => {
       </Row>
       {deleteLoading && <Loader />}
       {deleteError && <Message variant="danger">{deleteError}</Message>}
+      {createLoading && <Loader />}
+      {createError && <Message variant="danger">{createError}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -104,7 +131,7 @@ const ProductListScreen = () => {
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default ProductListScreen
+export default ProductListScreen;
