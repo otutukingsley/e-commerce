@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
-import { eachProduct } from "../actions/productActions";
+import {
+  clearMessages,
+  eachProduct,
+  updateSingleProduct,
+} from "../actions/productActions";
 
 const ProductEditScreen = () => {
   const { id } = useParams();
@@ -24,27 +28,53 @@ const ProductEditScreen = () => {
     (state) => state.productDetail
   );
 
+  const {
+    loading: updateLoading,
+    error: updateError,
+    product: updatedProduct,
+    resMessage: updateSuccess,
+  } = useSelector((state) => state.updateProduct);
+
   useEffect(() => {
-    if (!product.name || product._id !== id) {
+    if (updateSuccess) {
+      dispatch(clearMessages());
+      setProductItem({
+        name: "",
+        price: 0,
+        image: "",
+        brand: "",
+        category: "",
+        countInStock: 0,
+        description: "",
+      });
+      navigate("/admin/productlist");
+    }
+  }, [dispatch, id, navigate, product, updateSuccess]);
+
+  useEffect(() => {
+    if (!product?.name || product?._id !== id) {
       dispatch(eachProduct(id));
     } else {
       setProductItem((current) => ({
         ...current,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        brand: product.brand,
-        category: product.category,
-        countInStock: product.countInStock,
-        description: product.description,
+        name: product?.name,
+        price: product?.price,
+        image: product?.image,
+        brand: product?.brand,
+        category: product?.category,
+        countInStock: product?.countInStock,
+        description: product?.description,
       }));
     }
   }, [dispatch, id, product]);
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    //UPDATE PRODUCT
-  };
+  const submitHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(updateSingleProduct(id, productItem));
+    },
+    [dispatch, productItem, id]
+  );
 
   return (
     <>
@@ -53,6 +83,8 @@ const ProductEditScreen = () => {
       </button>
       <FormContainer>
         <h1>Edit Product Details</h1>
+        {updateSuccess && <Loader />}
+        {updateError && <Message variant="danger">{updateError}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (

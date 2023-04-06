@@ -32,6 +32,8 @@ export const eachProduct = (id) => async (dispatch) => {
 
     const response = await axios.get(`/api/products/${id}`);
 
+    console.log(response)
+
     dispatch({
       type: actionTypes.PRODUCT_DETAILS_SUCCESS,
       payload: response.data,
@@ -100,8 +102,6 @@ export const createSingleProduct =
 
       const { data } = await axios.post(`/api/products`, formData, config);
 
-      console.log(data);
-
       dispatch({
         type: actionTypes.PRODUCT_CREATE_SUCCESS,
         payload: {
@@ -125,3 +125,45 @@ export const clearMessages = () => (dispatch) => {
     type: actionTypes.CLEAR_MSG,
   });
 };
+
+export const updateSingleProduct =
+  (id, formData = {}) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: actionTypes.PRODUCT_UPDATE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(`/api/products/${id}`, formData, config);
+
+
+      console.log(data)
+
+      dispatch({
+        type: actionTypes.PRODUCT_UPDATE_SUCCESS,
+        payload: {
+          product: data,
+          message: "Product updated successfully",
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: actionTypes.PRODUCT_UPDATE_ERROR,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

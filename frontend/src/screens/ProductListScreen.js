@@ -57,8 +57,6 @@ const ProductListScreen = () => {
     createdProduct,
   ]);
 
-  console.log(createdProduct)
-
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure")) {
       dispatch(deleteProduct(id));
