@@ -5,7 +5,16 @@ import Product from "../models/productsModel.js";
 //@route GET /api/products
 //@access Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+
+  const products = await Product.find({ ...keyword });
   res.json(products);
 });
 
@@ -91,8 +100,8 @@ const reviewSingleProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    console.log(product.user)
-    console.log(req.user._id)
+    console.log(product.user);
+    console.log(req.user._id);
     const reviewed = product.reviews.find(
       (r) => r.user.toString() === req.user._id.toString()
     );
@@ -129,5 +138,5 @@ export {
   deleteSingleProduct,
   createSingleProduct,
   updateSingleProduct,
-  reviewSingleProduct
+  reviewSingleProduct,
 };
