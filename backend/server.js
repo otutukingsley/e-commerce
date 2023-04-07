@@ -1,4 +1,5 @@
 import express from "express";
+import morgan from "morgan";
 import dotenv from "dotenv";
 import path, { dirname } from "path";
 import connectDB from "./config/db.js";
@@ -13,6 +14,11 @@ connectDB();
 const app = express();
 
 app.use(express.json());
+
+if(process.env.NODE_ENV === 'development'){
+  app.use(morgan('dev'))
+}
+
 app.use("/api/products", productRoute);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/users", userRoute);
@@ -26,6 +32,7 @@ app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 app.use(notFound);
 app.use(errorHandler);
+
 
 const PORT = process.env.PORT || 5001;
 
