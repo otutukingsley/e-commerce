@@ -1,41 +1,41 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { Form, Button, Row, Col } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import FormContainer from '../components/FormContainer'
-import { register } from '../actions/userActions'
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Form, Button, Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import FormContainer from "../components/FormContainer";
+import { register } from "../actions/userActions";
 
 const RegisterScreen = () => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [message, setMessage] = useState(null)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const userRegister = useSelector((state) => state.userRegister)
-  const { loading, error } = userRegister
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
-  const location = useLocation()
-  const redirect = location.search ? location.search.split('=')[1] : '/'
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userRegister = useSelector((state) => state.userRegister);
+  const { loading, error } = userRegister;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  const location = useLocation();
+  const redirect = location.search ? location.search.split("=")[1] : "/";
 
   useEffect(() => {
     if (userInfo) {
-      navigate(redirect)
+      navigate(redirect);
     }
-  }, [navigate, redirect, userInfo])
+  }, [navigate, redirect, userInfo]);
 
   const submitHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (password !== confirmPassword) {
-      setMessage('Passwords do not match')
+      setMessage("Passwords do not match");
     } else {
-      dispatch(register(name, email, password))
+      dispatch(register(name, email, password));
     }
-  }
+  };
 
   return (
     <FormContainer>
@@ -88,14 +88,14 @@ const RegisterScreen = () => {
 
       <Row className="py-3">
         <Col>
-          Have an Account?{' '}
-          <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+          Have an Account?{" "}
+          <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
             Sign In
           </Link>
         </Col>
       </Row>
     </FormContainer>
-  )
-}
+  );
+};
 
-export default RegisterScreen
+export default RegisterScreen;

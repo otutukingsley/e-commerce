@@ -5,7 +5,6 @@ const notFound = (req, res, next) => { // no specified route meaning all the ser
   next(error)
 }
 
-
 //error handling middleware: 
 const errorHandler = (error, req, res, next) => { // this code will be fired off only when an error object exists in the app, hence the error params passed
     // the error params passed, catches the errors thrown from anywhere in our server

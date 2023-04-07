@@ -31,4 +31,4 @@ Rating.defaultProps = {
   color: '#f8e825',
 }
 
-export default Product
+export default Product;

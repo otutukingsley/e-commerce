@@ -215,4 +215,4 @@ const OrderScreen = () => {
   );
 };
 
-export default OrderScreen;
+export default OrderScreen

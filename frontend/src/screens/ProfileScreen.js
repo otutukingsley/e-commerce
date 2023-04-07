@@ -1,51 +1,51 @@
-import React, { useState, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Form, Button, Row, Col, Table } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
-import Message from "../components/Message"
-import Loader from "../components/Loader"
-import { getUserProfile, updateUserProfile } from "../actions/userActions"
-import { getMyOrders } from "../actions/orderActions"
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Form, Button, Row, Col, Table } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import { getUserProfile, updateUserProfile } from "../actions/userActions";
+import { getMyOrders } from "../actions/orderActions";
 
 const ProfileScreen = () => {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [message, setMessage] = useState(null)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const userDetails = useSelector((state) => state.userDetails)
-  const { loading, error, profile } = userDetails
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
-  const userUpdate = useSelector((state) => state.userUpdate)
-  const { success } = userUpdate
-  const myOrders = useSelector((state) => state.myOrders)
-  const { orders, loading: loadingOrders, error: errorOrders } = myOrders
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userDetails = useSelector((state) => state.userDetails);
+  const { loading, error, profile } = userDetails;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  const userUpdate = useSelector((state) => state.userUpdate);
+  const { success } = userUpdate;
+  const myOrders = useSelector((state) => state.myOrders);
+  const { orders, loading: loadingOrders, error: errorOrders } = myOrders;
 
   useEffect(() => {
     if (!userInfo) {
-      navigate("/login")
+      navigate("/login");
     } else {
       if (!profile.name) {
-        dispatch(getUserProfile("profile"))
-        dispatch(getMyOrders())
+        dispatch(getUserProfile("profile"));
+        dispatch(getMyOrders());
       } else {
-        setName(profile.name)
-        setEmail(profile.email)
+        setName(profile.name);
+        setEmail(profile.email);
       }
     }
-  }, [dispatch, navigate, profile.email, profile.name, userInfo])
+  }, [dispatch, navigate, profile.email, profile.name, userInfo]);
 
   const submitHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (password !== confirmPassword) {
-      setMessage("Passwords do not match")
+      setMessage("Passwords do not match");
     } else {
-      dispatch(updateUserProfile({ _id: profile._id, name, email, password }))
+      dispatch(updateUserProfile({ _id: profile._id, name, email, password }));
     }
-  }
+  };
 
   return (
     <Row>
@@ -150,7 +150,7 @@ const ProfileScreen = () => {
         )}
       </Col>
     </Row>
-  )
-}
+  );
+};
 
-export default ProfileScreen
+export default ProfileScreen;

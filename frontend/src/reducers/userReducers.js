@@ -206,9 +206,8 @@ export const adminDeleteUserReducer = (state = initialState, action) => {
     default:
       return state
   }
-}
+};
 
-//Admin EDIT
 export const adminEditUserReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.USER_EDIT_REQUEST:

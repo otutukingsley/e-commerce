@@ -1,41 +1,41 @@
-import React, { useState, useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom"
-import { Form, Button } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
-import Message from "../components/Message"
-import Loader from "../components/Loader"
-import FormContainer from "../components/FormContainer"
-import { getUserProfile, editUser, clearMessages } from "../actions/userActions"
-import { USER_EDIT_RESET } from "../constants/userConstants"
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import FormContainer from "../components/FormContainer";
+import {
+  getUserProfile,
+  editUser,
+  clearMessages,
+} from "../actions/userActions";
+import { USER_EDIT_RESET } from "../constants/userConstants";
 
 const UserEditScreen = () => {
-  const { id } = useParams()
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [isAdmin, setIsAdmin] = useState(false)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const userDetails = useSelector((state) => state.userDetails)
-  const { loading, error, profile } = userDetails
-  const adminEditUser = useSelector((state) => state.adminEditUser)
-  const {
-    loading: editLoading,
-    error: editError,
-    resMessage,
-  } = adminEditUser
+  const { id } = useParams();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userDetails = useSelector((state) => state.userDetails);
+  const { loading, error, profile } = userDetails;
+  const adminEditUser = useSelector((state) => state.adminEditUser);
+  const { loading: editLoading, error: editError, resMessage } = adminEditUser;
 
   useEffect(() => {
     if (resMessage) {
-      dispatch({ type: USER_EDIT_RESET })
-      dispatch(clearMessages())
-      navigate("/admin/userlist")
+      dispatch({ type: USER_EDIT_RESET });
+      dispatch(clearMessages());
+      navigate("/admin/userlist");
     } else {
       if (!profile.name || profile._id !== id) {
-        dispatch(getUserProfile(id))
+        dispatch(getUserProfile(id));
       } else {
-        setName(profile.name)
-        setEmail(profile.email)
-        setIsAdmin(profile.isAdmin)
+        setName(profile.name);
+        setEmail(profile.email);
+        setIsAdmin(profile.isAdmin);
       }
     }
   }, [
@@ -47,13 +47,13 @@ const UserEditScreen = () => {
     profile.isAdmin,
     profile.name,
     resMessage,
-  ])
+  ]);
 
   const submitHandler = (e) => {
-    e.preventDefault()
-    const formData = { name: name, email: email, isAdmin: isAdmin }
-    dispatch(editUser(id, formData))
-  }
+    e.preventDefault();
+    const formData = { name: name, email: email, isAdmin: isAdmin };
+    dispatch(editUser(id, formData));
+  };
 
   return (
     <>
@@ -103,7 +103,7 @@ const UserEditScreen = () => {
         )}
       </FormContainer>
     </>
-  )
-}
+  );
+};
 
-export default UserEditScreen
+export default UserEditScreen;

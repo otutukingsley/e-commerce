@@ -1,25 +1,27 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { Form, Button } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
-import FormContainer from "../components/FormContainer"
-import CheckOutSteps from "../components/CheckOutSteps"
-import { saveShippingDetails } from "../actions/cartActions"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import FormContainer from "../components/FormContainer";
+import CheckOutSteps from "../components/CheckOutSteps";
+import { saveShippingDetails } from "../actions/cartActions";
 
 const ShippingScreen = () => {
-  const dispatch = useDispatch()
-  const cart = useSelector((state) => state.cart)
-  const { shippingDetails } = cart
-  const [address, setAddress] = useState(shippingDetails.address || "")
-  const [city, setCity] = useState(shippingDetails.city || "")
-  const [postalCode, setPostalCode] = useState(shippingDetails.postalCode || "")
-  const [country, setCountry] = useState(shippingDetails.country || "")
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+  const { shippingDetails } = cart;
+  const [address, setAddress] = useState(shippingDetails.address || "");
+  const [city, setCity] = useState(shippingDetails.city || "");
+  const [postalCode, setPostalCode] = useState(
+    shippingDetails.postalCode || ""
+  );
+  const [country, setCountry] = useState(shippingDetails.country || "");
+  const navigate = useNavigate();
   const submitHandler = (e) => {
-    e.preventDefault()
-    dispatch(saveShippingDetails({ address, city, postalCode, country }))
-    navigate("/payment")
-  }
+    e.preventDefault();
+    dispatch(saveShippingDetails({ address, city, postalCode, country }));
+    navigate("/payment");
+  };
 
   return (
     <FormContainer>
@@ -75,7 +77,7 @@ const ShippingScreen = () => {
         </Button>
       </Form>
     </FormContainer>
-  )
-}
+  );
+};
 
-export default ShippingScreen
+export default ShippingScreen;

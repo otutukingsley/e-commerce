@@ -164,7 +164,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
               <Form.Control
                 type="file"
-                accept=".png, .jpg, .jpeg" 
+                accept=".png, .jpg, .jpeg"
                 id="image-file"
                 label="Choose File"
                 custom

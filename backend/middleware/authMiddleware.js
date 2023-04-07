@@ -35,4 +35,4 @@ const isAdmin = (req, res, next) => {
   }
 }
 
-export { protect, isAdmin }
+export { protect, isAdmin };

@@ -9,7 +9,7 @@ export const initialState = {
   cartItems: [],
   shippingDetails: {},
   paymentMethod: null,
-}
+};
 
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
