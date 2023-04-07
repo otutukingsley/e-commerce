@@ -99,7 +99,7 @@ const reviewSingleProduct = asyncHandler(async (req, res) => {
 
     if (reviewed) {
       res.status(400);
-      throw new Error("Product already reviewed");
+      throw new Error("This product have already been reviewed by you");
     }
 
     const review = {

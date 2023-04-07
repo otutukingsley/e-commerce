@@ -124,6 +124,13 @@ export const clearMessages = () => (dispatch) => {
   });
 };
 
+export const resetReview = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.PRODUCT_REVIEW_RESET,
+  });
+};
+
+
 export const updateSingleProduct =
   (id, formData = {}) =>
   async (dispatch, getState) => {
@@ -138,15 +145,12 @@ export const updateSingleProduct =
 
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
       const { data } = await axios.put(`/api/products/${id}`, formData, config);
-
-
-      console.log(data)
 
       dispatch({
         type: actionTypes.PRODUCT_UPDATE_SUCCESS,
@@ -158,6 +162,46 @@ export const updateSingleProduct =
     } catch (error) {
       dispatch({
         type: actionTypes.PRODUCT_UPDATE_ERROR,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const reviewSingleProduct =
+  (id, formData = {}) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: actionTypes.PRODUCT_REVIEW_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        `/api/products/${id}/review`,
+        formData,
+        config
+      );
+
+      dispatch({
+        type: actionTypes.PRODUCT_REVIEW_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: actionTypes.PRODUCT_REVIEW_ERROR,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

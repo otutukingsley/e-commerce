@@ -190,3 +190,48 @@ export const updateProductReducer = (
       return state;
   }
 };
+
+
+export const reviewProductReducer = (
+  state = {
+    loading: false,
+    error: null,
+    success: false,
+    message: null,
+  },
+  action
+) => {
+  switch (action.type) {
+    case actionTypes.PRODUCT_REVIEW_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case actionTypes.PRODUCT_REVIEW_SUCCESS:
+      return {
+        ...state,
+        message: action.payload,
+        success: true,
+        loading: false,
+      };
+
+    case actionTypes.PRODUCT_REVIEW_RESET:
+      return {
+        loading: false,
+        error: null,
+        success: false,
+        message: null,
+      };
+
+    case actionTypes.PRODUCT_REVIEW_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+
+    default:
+      return state;
+  }
+};
