@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +25,7 @@ const ProductEditScreen = () => {
     countInStock: 0,
     description: "",
   });
+  const [uploading, setUploading] = useState(false);
   const { loading, error, product } = useSelector(
     (state) => state.productDetail
   );
@@ -56,13 +58,13 @@ const ProductEditScreen = () => {
     } else {
       setProductItem((current) => ({
         ...current,
-        name: product?.name,
-        price: product?.price,
-        image: product?.image,
-        brand: product?.brand,
-        category: product?.category,
-        countInStock: product?.countInStock,
-        description: product?.description,
+        name: product?.name || "",
+        price: product?.price || "",
+        image: product?.image || "",
+        brand: product?.brand || "",
+        category: product?.category || "",
+        countInStock: product?.countInStock || 0,
+        description: product?.description || "",
       }));
     }
   }, [dispatch, id, product]);
@@ -74,6 +76,30 @@ const ProductEditScreen = () => {
     },
     [dispatch, productItem, id]
   );
+
+  const uploadFileHandler = useCallback(async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      const { data } = await axios.post("/api/upload", formData, config);
+      setProductItem((current) => ({
+        ...current,
+        image: data,
+      }));
+      setUploading(false);
+    } catch (err) {
+      console.error(err);
+      setUploading(false);
+    }
+  }, []);
 
   return (
     <>
@@ -136,6 +162,14 @@ const ProductEditScreen = () => {
                   }));
                 }}
               ></Form.Control>
+              <Form.Control
+                type="file"
+                id="image-file"
+                label="Choose File"
+                custom
+                onChange={uploadFileHandler}
+              ></Form.Control>
+              {uploading && <Loader />}
             </Form.Group>
 
             <Form.Group controlId="brand" className="py-3">
