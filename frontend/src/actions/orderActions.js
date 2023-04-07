@@ -15,6 +15,10 @@ import {
   GET_ALL_ORDERS_ERROR,
   GET_ALL_ORDERS_REQUEST,
   GET_ALL_ORDERS_SUCCESS,
+  DELIVER_ORDER_REQUEST,
+  DELIVER_ORDER_SUCCESS,
+  DELIVER_ORDER_ERROR,
+  DELIVER_ORDER_RESET,
 } from "../constants/orderConstants";
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -123,6 +127,47 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
   }
 };
 
+export const deliverOrder =
+  (id, formData = {}) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: DELIVER_ORDER_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const response = await axios.put(
+        `/api/orders/${id}/deliver`,
+        formData,
+        config
+      );
+
+      console.log(response);
+
+      dispatch({
+        type: DELIVER_ORDER_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: DELIVER_ORDER_ERROR,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
 export const getMyOrders = () => async (dispatch, getState) => {
   try {
     dispatch({
@@ -189,4 +234,10 @@ export const getAllOrders = () => async (dispatch, getState) => {
           : error.message,
     });
   }
+};
+
+export const resetDelivered = () => (dispatch) => {
+  dispatch({
+    type: DELIVER_ORDER_RESET,
+  });
 };
