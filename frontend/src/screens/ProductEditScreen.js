@@ -31,7 +31,6 @@ const ProductEditScreen = () => {
   const {
     loading: updateLoading,
     error: updateError,
-    product: updatedProduct,
     resMessage: updateSuccess,
   } = useSelector((state) => state.updateProduct);
 
@@ -83,7 +82,7 @@ const ProductEditScreen = () => {
       </button>
       <FormContainer>
         <h1>Edit Product Details</h1>
-        {updateSuccess && <Loader />}
+        {updateLoading && <Loader />}
         {updateError && <Message variant="danger">{updateError}</Message>}
         {loading ? (
           <Loader />
