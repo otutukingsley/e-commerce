@@ -25,8 +25,8 @@ const Header = () => {
 
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id="user-name">
-                  <Link to="/profile">
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                  <Link to="/profile" className="dropdown-item">
+                    Profile
                   </Link>
                   <NavDropdown.Item onClick={() => dispatch(logout())}>
                     Logout
@@ -42,14 +42,14 @@ const Header = () => {
               )}
               {userInfo && userInfo.isAdmin && (
                 <NavDropdown title="Admin" id="adminMenu">
-                  <Link to="/admin/userlist">
-                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  <Link to="/admin/userlist" className="dropdown-item">
+                    Users
                   </Link>
-                  <Link to="/admin/productlist">
-                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  <Link to="/admin/productlist" className="dropdown-item">
+                    Products
                   </Link>
-                  <Link to="/admin/orderlist">
-                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  <Link to="/admin/orderlist" className="dropdown-item">
+                    Orders
                   </Link>
                 </NavDropdown>
               )}

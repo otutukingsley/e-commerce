@@ -13,7 +13,10 @@ import {
   GET_MY_ORDERS_SUCCESS,
   GET_MY_ORDERS_ERROR,
   GET_MY_ORDERS_RESET,
-} from "../constants/orderConstants"
+  GET_ALL_ORDERS_REQUEST,
+  GET_ALL_ORDERS_SUCCESS,
+  GET_ALL_ORDERS_ERROR,
+} from "../constants/orderConstants";
 
 export const orderCreatedReducer = (state = {}, action) => {
   switch (action.type) {
@@ -21,7 +24,7 @@ export const orderCreatedReducer = (state = {}, action) => {
       return {
         ...state,
         loading: true,
-      }
+      };
 
     case ORDER_CREATE_SUCCESS:
       return {
@@ -29,19 +32,19 @@ export const orderCreatedReducer = (state = {}, action) => {
         loading: false,
         success: true,
         order: action.payload,
-      }
+      };
 
     case ORDER_CREATE_ERROR:
       return {
         ...state,
         loading: false,
         error: action.payload,
-      }
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const orderRetrievedReducer = (
   state = { loading: true, orderItems: [], shippingDetails: {} },
@@ -52,52 +55,52 @@ export const orderRetrievedReducer = (
       return {
         ...state,
         loading: true,
-      }
+      };
 
     case ORDER_RETRIEVE_SUCCESS:
       return {
         ...state,
         loading: false,
         order: action.payload,
-      }
+      };
 
     case ORDER_RETRIEVE_ERROR:
       return {
         ...state,
         loading: false,
         error: action.payload,
-      }
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const orderPayReducer = (state = { success: false }, action) => {
   switch (action.type) {
     case ORDER_PAY_REQUEST:
       return {
         loading: true,
-      }
+      };
 
     case ORDER_PAY_SUCCESS:
       return {
         loading: false,
         success: true,
-      }
+      };
 
     case ORDER_PAY_ERROR:
       return {
         loading: false,
         error: action.payload,
-      }
+      };
 
     case ORDER_PAY_RESET:
-      return {}
+      return {};
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const myOrdersReducer = (state = { orders: [] }, action) => {
   switch (action.type) {
@@ -105,28 +108,62 @@ export const myOrdersReducer = (state = { orders: [] }, action) => {
       return {
         ...state,
         loading: true,
-      }
+      };
 
     case GET_MY_ORDERS_SUCCESS:
       return {
         ...state,
         loading: false,
         orders: action.payload,
-      }
+      };
 
     case GET_MY_ORDERS_ERROR:
       return {
         ...state,
         loading: false,
         error: action.payload,
-      }
+      };
 
     case GET_MY_ORDERS_RESET:
       return {
         orders: [],
-      }
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};
+
+export const allOrdersReducer = (
+  state = {
+    loading: false,
+    orders: [],
+    error: null,
+  },
+  action
+) => {
+  switch (action.type) {
+    case GET_ALL_ORDERS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case GET_ALL_ORDERS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        orders: action.payload,
+      };
+
+    case GET_ALL_ORDERS_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};

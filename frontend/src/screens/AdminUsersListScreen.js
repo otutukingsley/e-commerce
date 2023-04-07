@@ -20,10 +20,7 @@ const AdminUsersListScreen = () => {
 
   const adminDeleteUser = useSelector((state) => state.adminDeleteUser)
   const {
-    loading: deleteLoading,
-    error: deleteError,
     resMessage,
-    success: deleteSuccess,
   } = adminDeleteUser
 
   useEffect(() => {
