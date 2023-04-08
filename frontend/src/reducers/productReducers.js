@@ -20,7 +20,10 @@ export const productListReducer = (state = initialState, action) => {
     case actionTypes.PRODUCT_LIST_SUCCESS:
       return {
         ...state,
-        products: action.payload,
+        products: action.payload.products,
+        perPage: action.payload.perPage,
+        page: action.payload.page,
+        pages: action.payload.pages,
         loading: false,
       };
 

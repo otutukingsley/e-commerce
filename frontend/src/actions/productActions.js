@@ -1,28 +1,34 @@
 import axios from "axios";
 import * as actionTypes from "../constants/productsConstants";
 
-export const listProducts = (keyword = "") => async (dispatch) => {
-  try {
-    dispatch({
-      type: actionTypes.PRODUCT_LIST_REQUEST,
-    });
+export const listProducts =
+  (keyword = "", pageNumber = "") =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: actionTypes.PRODUCT_LIST_REQUEST,
+      });
 
-    const response = await axios.get(`/api/products?keyword=${keyword}`);
+      const { data } = await axios.get(
+        `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+      );
 
-    dispatch({
-      type: actionTypes.PRODUCT_LIST_SUCCESS,
-      payload: response.data,
-    });
-  } catch (error) {
-    dispatch({
-      type: actionTypes.PRODUCT_LIST_ERROR,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      console.log(data)
+
+      dispatch({
+        type: actionTypes.PRODUCT_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: actionTypes.PRODUCT_LIST_ERROR,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const eachProduct = (id) => async (dispatch) => {
   try {
@@ -129,7 +135,6 @@ export const resetReview = () => (dispatch) => {
     type: actionTypes.PRODUCT_REVIEW_RESET,
   });
 };
-
 
 export const updateSingleProduct =
   (id, formData = {}) =>

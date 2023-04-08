@@ -8,14 +8,16 @@ import Message from "../components/Message";
 import { useParams } from "react-router-dom";
 const HomeScreen = () => {
   const dispatch = useDispatch();
-  const { keyword } = useParams();
+  const { keyword, pageNumber = 1 } = useParams();
   const productList = useSelector((state) => state.productList);
 
   const { loading, error, products } = productList;
 
+  console.log(pageNumber)
+
   React.useEffect(() => {
-    dispatch(listProducts(keyword));
-  }, [dispatch, keyword]);
+    dispatch(listProducts(keyword, pageNumber));
+  }, [dispatch, keyword, pageNumber]);
 
   return (
     <>
