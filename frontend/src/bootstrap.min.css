@@ -128,6 +128,9 @@ ol ul,
 ul ol {
   margin-bottom: 0;
 }
+.visually-hidden{
+  display: none;
+}
 dt {
   font-weight: 700;
 }

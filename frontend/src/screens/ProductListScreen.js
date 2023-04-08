@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,12 +10,14 @@ import {
   clearMessages,
   createSingleProduct,
 } from "../actions/productActions";
+import Paginate from "../components/Paginate";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
+  const { pageNumber = 1 } = useParams();
   const navigate = useNavigate();
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+  const { loading, error, products, page, pages } = productList;
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const deleteSingleProduct = useSelector((state) => state.deleteProduct);
@@ -41,13 +43,12 @@ const ProductListScreen = () => {
       navigate(`/admin/product/${createdProduct?._id}/edit`);
       dispatch(clearMessages());
     } else {
-      dispatch(listProducts());
+      dispatch(listProducts("", pageNumber));
     }
 
     if (successDelete) {
       dispatch(clearMessages());
     }
-
   }, [
     dispatch,
     navigate,
@@ -55,6 +56,7 @@ const ProductListScreen = () => {
     successDelete,
     successCreate,
     createdProduct,
+    pageNumber,
   ]);
 
   const deleteHandler = (id) => {
@@ -126,6 +128,7 @@ const ProductListScreen = () => {
               ))}
             </tbody>
           </Table>
+          <Paginate page={page} pages={pages} isAdmin={userInfo.isAdmin} />
         </>
       )}
     </>
