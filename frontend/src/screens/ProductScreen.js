@@ -18,6 +18,7 @@ import {
 } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import Meta from "../components/Meta";
 
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
@@ -28,17 +29,16 @@ const ProductScreen = () => {
   const dispatch = useDispatch();
   const productDetail = useSelector((state) => state.productDetail);
   const { loading, error, product } = productDetail;
-  const {
-    error: reviewError,
-    success: reviewSuccess,
-  } = useSelector((state) => state.reviewProduct);
+  const { error: reviewError, success: reviewSuccess } = useSelector(
+    (state) => state.reviewProduct
+  );
   const { userInfo } = useSelector((state) => state.userLogin);
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
     if (reviewSuccess) {
-      alert(`Reviewed successfully`)
+      alert(`Reviewed successfully`);
       setReview({
         rating: "0",
         comment: "",
@@ -70,6 +70,7 @@ const ProductScreen = () => {
   return (
     !!product && (
       <Fragment>
+        <Meta title={product.name} />
         <button className="btn btn-dark my-3" onClick={() => navigate(-1)}>
           Go back
         </button>
@@ -222,9 +223,7 @@ const ProductScreen = () => {
                               name="rating"
                               required
                             >
-                              <option value="">
-                                Select...
-                              </option>
+                              <option value="">Select...</option>
                               <option value="4">5 - Excellent</option>
                               <option value="3">4 - Very Good</option>
                               <option value="2">3 - Good</option>

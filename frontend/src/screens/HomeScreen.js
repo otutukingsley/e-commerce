@@ -5,9 +5,10 @@ import Product from "../components/Product";
 import { listProducts } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Paginate from "../components/Paginate";
 import TopProducts from "../components/TopProducts";
+import Meta from "../components/Meta";
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const { keyword, pageNumber = 1 } = useParams();
@@ -21,7 +22,14 @@ const HomeScreen = () => {
 
   return (
     <>
-    {!keyword && <TopProducts/>}
+      <Meta />
+      {!keyword ? (
+        <TopProducts />
+      ) : (
+        <Link to="/" className="btn btn-dark">
+          Go Back
+        </Link>
+      )}
       <h1>Latest Products</h1>
       {loading ? (
         <Loader />

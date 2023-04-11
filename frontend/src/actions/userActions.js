@@ -139,6 +139,14 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       type: actionTypes.USER_UPDATE_SUCCESS,
       payload: response.data,
     })
+
+    dispatch({
+      type: actionTypes.USER_LOGIN_SUCCESS,
+      payload: response.data,
+    })
+
+    localStorage.setItem("userInfo", JSON.stringify(response.data))
+
   } catch (error) {
     dispatch({
       type: actionTypes.USER_UPDATE_ERROR,
@@ -273,5 +281,11 @@ export const logout = () => (dispatch) => {
 export const clearMessages = () => (dispatch) => {
   dispatch({
     type: actionTypes.CLEAR_MSG,
+  })
+}
+
+export const resetProfile = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.USER_UPDATE_RESET,
   })
 }

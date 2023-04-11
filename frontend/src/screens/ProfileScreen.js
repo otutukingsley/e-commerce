@@ -4,7 +4,11 @@ import { Form, Button, Row, Col, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { getUserProfile, updateUserProfile } from "../actions/userActions";
+import {
+  getUserProfile,
+  updateUserProfile,
+  resetProfile,
+} from "../actions/userActions";
 import { getMyOrders } from "../actions/orderActions";
 
 const ProfileScreen = () => {
@@ -28,7 +32,8 @@ const ProfileScreen = () => {
     if (!userInfo) {
       navigate("/login");
     } else {
-      if (!profile.name) {
+      if (!profile || !profile.name || success) {
+        dispatch(resetProfile());
         dispatch(getUserProfile("profile"));
         dispatch(getMyOrders());
       } else {
@@ -36,7 +41,7 @@ const ProfileScreen = () => {
         setEmail(profile.email);
       }
     }
-  }, [dispatch, navigate, profile.email, profile.name, userInfo]);
+  }, [dispatch, navigate, profile, userInfo, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
