@@ -194,7 +194,6 @@ export const updateProductReducer = (
   }
 };
 
-
 export const reviewProductReducer = (
   state = {
     loading: false,
@@ -228,6 +227,41 @@ export const reviewProductReducer = (
       };
 
     case actionTypes.PRODUCT_REVIEW_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const topProductsReducer = (
+  state = {
+    loading: false,
+    error: null,
+    products: [],
+  },
+  action
+) => {
+  switch (action.type) {
+    case actionTypes.TOP_PRODUCTS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        products: [],
+      };
+
+    case actionTypes.TOP_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        products: action.payload,
+        loading: false,
+      };
+
+    case actionTypes.TOP_PRODUCTS_ERROR:
       return {
         ...state,
         error: action.payload,

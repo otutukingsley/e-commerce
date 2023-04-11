@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useParams } from "react-router-dom";
 import Paginate from "../components/Paginate";
+import TopProducts from "../components/TopProducts";
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const { keyword, pageNumber = 1 } = useParams();
@@ -14,14 +15,13 @@ const HomeScreen = () => {
 
   const { loading, error, products, page, pages } = productList;
 
-  console.log(pageNumber);
-
   React.useEffect(() => {
     dispatch(listProducts(keyword, pageNumber));
   }, [dispatch, keyword, pageNumber]);
 
   return (
     <>
+    {!keyword && <TopProducts/>}
       <h1>Latest Products</h1>
       {loading ? (
         <Loader />

@@ -13,8 +13,6 @@ export const listProducts =
         `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
       );
 
-      console.log(data)
-
       dispatch({
         type: actionTypes.PRODUCT_LIST_SUCCESS,
         payload: data,
@@ -214,3 +212,28 @@ export const reviewSingleProduct =
       });
     }
   };
+
+export const topProducts = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.TOP_PRODUCTS_REQUEST,
+    });
+
+    const {
+      data: { products },
+    } = await axios.get(`/api/products/top`);
+
+    dispatch({
+      type: actionTypes.TOP_PRODUCTS_SUCCESS,
+      payload: products,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionTypes.TOP_PRODUCTS_ERROR,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

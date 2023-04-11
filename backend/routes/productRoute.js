@@ -11,6 +11,11 @@ import {
 } from "../controllers/productController.js";
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
 
+// @desc Top products
+//@route Get /api/products/top
+//@access Public
+router.route("/top").get(getTopProducts);
+
 // @desc Fetch all products
 //@route GET /api/products
 //@access Public
@@ -29,10 +34,5 @@ router
 //@route POST /api/products/:id/review
 //@access Public
 router.route("/:id/review").post(protect, reviewSingleProduct);
-
-// @desc Top products
-//@route Get /api/products/top
-//@access Public
-router.route("/top").get(getTopProducts);
 
 export default router;
