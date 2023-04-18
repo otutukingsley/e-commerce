@@ -8,6 +8,7 @@ import {
   createSingleProduct,
   reviewSingleProduct,
   getTopProducts,
+  uploadImage,
 } from "../controllers/productController.js";
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
 
@@ -34,5 +35,10 @@ router
 //@route POST /api/products/:id/review
 //@access Public
 router.route("/:id/review").post(protect, reviewSingleProduct);
+
+// @desc Upload a product image
+//@route POST /api/products/:id/upload
+//@access Admin only
+router.route("/:id/upload").post(protect, isAdmin, uploadImage);
 
 export default router;

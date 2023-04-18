@@ -16,6 +16,8 @@ const ProductEditScreen = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
   const [productItem, setProductItem] = useState({
     name: "",
     price: 0,
@@ -77,29 +79,64 @@ const ProductEditScreen = () => {
     [dispatch, productItem, id]
   );
 
-  const uploadFileHandler = useCallback(async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("image", file);
+  const submitFile = async (result) => {
     setUploading(true);
-
     try {
       const config = {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      const { data } = await axios.post("/api/upload", formData, config);
+
+      const {data} = await axios.post(
+        `/api/products/${id}/upload`,
+        {
+          image: result,
+        },
+        config
+      );
+
       setProductItem((current) => ({
         ...current,
         image: data,
       }));
+
       setUploading(false);
+
     } catch (err) {
       console.error(err);
       setUploading(false);
     }
-  }, []);
+  };
+
+  const uploadFileHandler = async (e) => {
+    const filePromises = [...e.target.files].map((file) => {
+      //Return a promise per file
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = async () => {
+          try {
+            const response = await submitFile(reader.result);
+            resolve(response);
+          } catch (err) {
+            reject(err);
+          }
+        };
+
+        reader.onerror = (err) => {
+          reject(err);
+        };
+
+        reader.readAsDataURL(file);
+      });
+    });
+
+    const fileInfos = await Promise.all(filePromises);
+
+    return fileInfos;
+  };
 
   return (
     <>
@@ -164,6 +201,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
               <Form.Control
                 type="file"
+                multiple
                 accept=".png, .jpg, .jpeg"
                 id="image-file"
                 label="Choose File"

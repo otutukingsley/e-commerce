@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Product from "../models/productsModel.js";
+import cloudinary from "../utils/cloudinary.js";
 
 // @desc Fetch all products
 //@route GET /api/products
@@ -113,8 +114,6 @@ const reviewSingleProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    console.log(product.user);
-    console.log(req.user._id);
     const reviewed = product.reviews.find(
       (r) => r.user.toString() === req.user._id.toString()
     );
@@ -153,6 +152,33 @@ const getTopProducts = asyncHandler(async (req, res) => {
   res.json({ products });
 });
 
+// @desc Upload a product image
+//@route POST /api/products/:id/upload
+//@access Admin only
+const uploadImage = asyncHandler(async (req, res) => {
+  const { image } = req.body;
+
+  try {
+    let product = await Product.findById(req.params.id);
+
+    if (!product) {
+      res.status(404);
+      throw new Error("Product not found");
+    }
+
+    const result = await cloudinary.uploader.upload(image, {
+      folder: "product-images",
+    });
+
+    res.send(`${result.secure_url}`);
+
+  } catch (error) {
+    // res.status(500);
+    // throw new Error("Something went wrong");
+    console.error(error)
+  }
+});
+
 export {
   getProducts,
   getSingleProduct,
@@ -160,5 +186,6 @@ export {
   createSingleProduct,
   updateSingleProduct,
   reviewSingleProduct,
-  getTopProducts
+  getTopProducts,
+  uploadImage,
 };

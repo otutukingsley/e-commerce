@@ -13,10 +13,14 @@ dotenv.config();
 connectDB();
 const app = express();
 
-app.use(express.json());
+app.use(
+  express.json({
+    limit: "100mb",
+  })
+);
 
-if(process.env.NODE_ENV === 'development'){
-  app.use(morgan('dev'))
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
 }
 
 app.use("/api/products", productRoute);
@@ -32,7 +36,6 @@ app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 app.use(notFound);
 app.use(errorHandler);
-
 
 const PORT = process.env.PORT || 5001;
 

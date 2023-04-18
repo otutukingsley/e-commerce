@@ -151,8 +151,6 @@ export const deliverOrder =
         config
       );
 
-      console.log(response);
-
       dispatch({
         type: DELIVER_ORDER_SUCCESS,
         payload: response.data,
