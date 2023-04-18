@@ -173,8 +173,8 @@ const uploadImage = asyncHandler(async (req, res) => {
     res.send(`${result.secure_url}`);
 
   } catch (error) {
-    // res.status(500);
-    // throw new Error("Something went wrong");
+    res.status(500);
+    throw new Error("Something went wrong");
     console.error(error)
   }
 });
